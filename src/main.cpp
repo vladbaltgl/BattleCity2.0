@@ -1,5 +1,6 @@
 #include<glad/glad.h>
 #include <GLFW/glfw3.h>
+#include"Renderer/ShaderProgram.h"
 #include<iostream>
 using namespace std;
 
@@ -96,23 +97,15 @@ cout << "OpenGL Version: " << glGetString(GL_VERSION) << endl;
 
 glClearColor(2,1,0,1);
 
-//make vertex shader
-GLuint vs = glCreateShader(GL_VERTEX_SHADER);
-glShaderSource(vs, 1, &vertex_shader, nullptr);
-glCompileShader(vs);
+std::string vertexShader(vertex_shader);
+std::string fragmentShader(fragment_shader);
 
-//make fragment shader
-GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
-glShaderSource  (fs, 1, &fragment_shader, nullptr);
-glCompileShader(fs);
-//shader program
-GLuint shader_program = glCreateProgram();
-glAttachShader(shader_program, vs);
-glAttachShader(shader_program, fs);
-glLinkProgram(shader_program);
 
-glDeleteShader(vs);
-glDeleteShader(fs);
+Renderer::ShaderProgram shaderProgram(vertexShader, fragmentShader);
+if (!shaderProgram.isCompilled()) {
+    std::cerr << "Can't create shader program\n";
+    return -1;
+}
 
 
 //vbo
@@ -156,7 +149,7 @@ glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shader_program);
+        shaderProgram.use();
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
