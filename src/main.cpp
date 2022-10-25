@@ -96,6 +96,8 @@ int main(int argc, char** argv)
 
 
 
+        resourceManager.loadTexture("DefaultTexture", "res/textures/map_16x16.png");
+
 
     //vbo
     GLuint points_vbo = 0;
