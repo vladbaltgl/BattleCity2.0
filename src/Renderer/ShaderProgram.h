@@ -8,6 +8,7 @@ namespace Renderer {
 		~ShaderProgram();
 		bool isCompilled() { return m_isCompilled; }
 		void use()const;
+		void setInt(const std::string& name, const GLint value);
 		bool createShader(const std::string& source,const GLenum shaderType,  GLuint&shader_ID);
 		ShaderProgram() = delete;
 		ShaderProgram(ShaderProgram&) = delete;

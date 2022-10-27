@@ -19,6 +19,7 @@ namespace Renderer {
 		Texture2D(Texture2D&& texture2d);
 		~Texture2D();
 
+		//make active texture
 		void bind()const;
 	private:
 		GLuint m_ID;

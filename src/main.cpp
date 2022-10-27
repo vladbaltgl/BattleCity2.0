@@ -1,8 +1,12 @@
 #include<glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include<iostream>
+
+#include"Renderer/Texture2D.h"
 #include"Renderer/ShaderProgram.h"
 #include"Resources/ResourceManager.h"
-#include<iostream>
+
 using namespace std;
 
 GLfloat point[] = {
@@ -14,6 +18,11 @@ GLfloat colors[] = {
     1.0f,0.0f,0.0f,
     0.0f,1.0f,0.0f,
     0.0f,0.0f,1.0f
+};
+GLfloat texCoord[] = {
+    0.5f,1.0f,
+    1.0f,0.0f,
+    0.0f,0.0f
 };
 
 
@@ -96,7 +105,7 @@ int main(int argc, char** argv)
 
 
 
-        resourceManager.loadTexture("DefaultTexture", "res/textures/map_16x16.png");
+     auto tex =   resourceManager.loadTexture("DefaultTexture", "res/textures/map_16x16.png");
 
 
     //vbo
@@ -110,6 +119,13 @@ int main(int argc, char** argv)
     glGenBuffers(1, &colors_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, colors_vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+
+
+    //texCoord vbo
+    GLuint texCoord_vbo = 0;
+    glGenBuffers(1, &texCoord_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, texCoord_vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(texCoord), texCoord, GL_STATIC_DRAW);
 
     //vao
     GLuint vao = 0;
@@ -127,10 +143,15 @@ int main(int argc, char** argv)
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
 
+    //coord Text download 
+    glEnableVertexAttribArray(2);
+    glBindBuffer(GL_ARRAY_BUFFER, texCoord_vbo);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
 
 
-
+    pDefaultShaderProgram->use();
+    pDefaultShaderProgram->setInt("tex",0);
 
 
 
@@ -142,6 +163,7 @@ int main(int argc, char** argv)
 
         pDefaultShaderProgram->use();
         glBindVertexArray(vao);
+        tex->bind();
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         /* Swap front and back buffers */
