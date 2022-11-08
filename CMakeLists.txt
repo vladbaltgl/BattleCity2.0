@@ -17,6 +17,9 @@ src/Renderer/Texture2D.h
 src/Renderer/Texture2D.cpp
 src/Renderer/Sprite.h
 src/Renderer/Sprite.cpp
+src/Renderer/AnimatedSprite.h
+src/Renderer/AnimatedSprite.cpp
+
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
